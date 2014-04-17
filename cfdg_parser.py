@@ -12,24 +12,24 @@ rule_regex = "\s*rule\s+(?P<ruleweight>[\d\-\.]*\s*)(?:\n\s*\{|\{)\n?(?:[^\}]*\n
 
 
 def grammar_from_file(filename):
-    return grammar_from_string(read_file(filename))
+	return grammar_from_string(read_file(filename))
 
 def grammar_from_string(string):
-    g = Grammar()
-    return g
+	g = Grammar()
+	return g
 
 def read_file(filename):
-    f = open(filename, 'r')
+	f = open(filename, 'r')
 
-    try:
-        lines = f.readlines()
-    finally:
-        f.close()
+	try:
+		lines = f.readlines()
+	finally:
+		f.close()
 
-    string = "".join(lines)
-    return string
+	string = "".join(lines)
+	return string
 
 
 if __name__ == "__main__":
-    g = grammar_from_file("grammars/clouds.cfdg")
-    print g
+	g = grammar_from_file("grammars/clouds.cfdg")
+	print g
