@@ -24,7 +24,7 @@ class Grammar:
 		string = "Grammar \n{\n"
 		string += "\tShapes:\n"
 		shapenames = [shape.name for shape in self.shapes]
-		for name in shapenames: string += "\t\t{0}\n".format(names)
+		for name in shapenames: string += "\t\t{0}\n".format(name)
 		string += "\tRules: {0}\n".format(len(self.rules))
 		string += "\tStartshape: {0}\n".format(self.startshape.name)
 		string += "}"
