@@ -3,6 +3,7 @@
 #  April 2014
 
 import re
+import sys
 from grammar import *
 
 startshape_regex = re.compile(r"\s*startshape\s+(?P<startshapename>\w+)\n")
@@ -29,7 +30,8 @@ def grammar_from_string(string):
 	shapematches = list(shape_regex.finditer(string))
 	for i in range(len(shapematches)):
 		shapematch = shapematches[i]
-		print "found shape at index: {0}".format(shapematch.groupdict())
+		shapename = shapematch.groupdict()["shapename"]
+		print "found shape '{0}'".format(shapename)
 		shape = Shape(shapematch.groupdict()["shapename"])
 		g.shapes.append(shape)
 
@@ -49,8 +51,9 @@ def grammar_from_string(string):
 			rulematches = list(rule_regex.finditer(string, shapematch.end(), nextshapestart))
 
 		# create rule for each match
+		print "\t{0} rule{1} found for shape '{2}'\n".format(
+				len(rulematches), "" if len(rulematches) == 1 else "s", shapename)
 		for match in rulematches:
-			print "\tRule match found at index {0}".format(match.start())
 			weightstr = match.groupdict()["ruleweight"]
 			if weightstr == "":
 				weight = 1.0
@@ -77,7 +80,13 @@ def read_file(filename):
 
 
 if __name__ == "__main__":
-	g = grammar_from_file("grammars/clouds.cfdg")
+	if len(sys.argv) != 2:
+		print "Usage: python {0} <path to grammar file>".format(sys.argv[0])
+		print "Note: grammar must be a Context Free v3 file"
+		sys.exit(0)
+
+	grammarpath = sys.argv[1]
+	g = grammar_from_file(grammarpath)
 	print g
 	#s = read_file("grammars/clouds.cfdg")
 	#m = re.search(startshape_regex, s)
