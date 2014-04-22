@@ -4,18 +4,23 @@
 
 import re
 import sys
-import grammar as g
+from grammar import *
 
 startshape_regex = re.compile(r"\s*startshape\s+(?P<startshapename>\w+)\n")
-shape_regex = re.compile(r"\s*(?<!start)shape\s+(?P<shapename>\w+)")
-single_rule_regex = re.compile(shape_regex.pattern + r"\s+(?P<ruleweight>[\d\-\.]*\s*)(?:\n\s*\{|\{)\n?(?P<rulebody>(?:[^\}]*\n?)+)\s*\}")
-rule_regex = re.compile(r"\s*rule\s+(?P<ruleweight>[\d\-\.]*\s*)(?:\n\s*\{|\{)\n?(?P<rulebody>(?:[^\}]*\n?)+)\s*\}")
+
+shape_pattern = r"\s*(?<!start)shape\s+(?P<shapename>\w+)"
+shape_regex = re.compile(shape_pattern)
+
+rule_weight_pattern = r"\s+(?P<rulefixed>\*?\s*)(?P<ruleweight>[\d\-\.]*\s*)"
+rule_body_pattern = r"(?:\n\s*\{|\{)\n?(?P<rulebody>(?:[^\}]*\n?)+)\s*\}"
+single_rule_regex = re.compile(shape_regex.pattern + rule_weight_pattern + rule_body_pattern)
+rule_regex = re.compile(r"\s*rule" + rule_weight_pattern + rule_body_pattern)
 
 def grammar_from_file(filename):
 	return grammar_from_string(read_file(filename))
 
 def grammar_from_string(string):
-	gram = g.Grammar()
+	gram = Grammar()
 	rules = []
 	shapes = []
 
@@ -24,7 +29,7 @@ def grammar_from_string(string):
 	if not startshapematch:
 		print "Error: Could not find start shape"
 		raise Exception
-	startshape = g.Shape(startshapematch.groupdict()["startshapename"])
+	startshape = Shape(startshapematch.groupdict()["startshapename"])
 
 	# Extract all shapes and rules
 	shapematches = list(shape_regex.finditer(string))
@@ -34,7 +39,7 @@ def grammar_from_string(string):
 		shapematch = shapematches[i]
 		shapename = shapematch.groupdict()["shapename"]
 		print "found shape '{0}'".format(shapename)
-		shape = g.Shape(shapematch.groupdict()["shapename"])
+		shape = Shape(shapematch.groupdict()["shapename"])
 		shapes.append(shape)
 
 		# Extract all rules for shape
@@ -62,7 +67,9 @@ def grammar_from_string(string):
 			else:
 				weight = float(weightstr)
 			rulebody = match.groupdict()["rulebody"]
-			rule = g.Rule(rulebody, weight)
+			#print "fixed: {0}".format(match.groupdict()["rulefixed"])
+			fixed = match.groupdict()["rulefixed"] == ""
+			rule = Rule(rulebody, weight, fixed)
 			rules.append(rule)
 			shape.rules.append(rule)
 
