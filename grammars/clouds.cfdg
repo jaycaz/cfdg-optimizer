@@ -7,7 +7,7 @@ shape startclouds
 }
 
 shape startcloud
-rule {
+rule * 2 {
 	side [ y -0.5 ]
 }
 

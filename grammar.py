@@ -18,7 +18,9 @@ class Shape:
 		return "<Shape '{0}'>".format(self.name)
 
 class Grammar:
-	def __init__(self, shapes = [], rules = [], startshape = Shape()):
+	def __init__(self, name = "", body = "", shapes = [], rules = [], startshape = Shape()):
+		self.name = name
+		self.body = body
 		self.shapes = shapes
 		self.rules = rules
 		self.startshape = startshape

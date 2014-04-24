@@ -5,7 +5,9 @@
 import copy
 import math
 import random as rand
+import re
 
+import cfdg_parser as c
 from grammar import *
 
 MAX_WEIGHT = 100
@@ -29,16 +31,35 @@ def generate_variant(grammar, roundnum, totalrounds, seed = None):
 	if seed != None:
 		rand.seed(seed)
 
+	# Copy grammar and alter rule weights
 	newgrammar = copy.deepcopy(grammar)
 	for rule in newgrammar.rules:
 		if rule.fixed:
 			continue
-		oldweight = rule.weight
-		rule.weight = gen_weight(oldweight, calc_stddev(roundnum, totalrounds))
-		print "{0} -> {1}".format(oldweight, rule.weight)
+
+		# Update rule weight
+		newweight = gen_weight(rule.weight, calc_stddev(roundnum, totalrounds))
+		print "{0} -> {1}".format(rule.weight, newweight)
+		rule.weight = newweight
+
+		# Update rule body string and overall grammar string with new weight
+		# TODO: Change to avoid changing a different rule if two rules in the grammar
+		#       are identical
+		rulematch = c.rule_regex.search(rule.body)
+		if rulematch == None:
+			rulematch = c.single_rule_regex.search(rule.body)
+
+		newrulebody = "{0}{1}{2}".format(
+				rule.body[:rulematch.start("ruleweight")],
+				str(newweight),
+				rule.body[rulematch.end("ruleweight"):])
+
+		newgrammarbody = newgrammar.body.replace(rule.body, newrulebody)
+		print "***************\n{0} \n------->\n {1}\n****************".format(rule.body, newrulebody)
+
+		rule.body = newrulebody
+		newgrammar.body = newgrammarbody
+
 
 	return newgrammar
 
-def print_weights(grammar):
-	weights = [rule.weight for rule in grammar.rules]
-	print weights

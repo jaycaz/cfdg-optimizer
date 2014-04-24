@@ -4,23 +4,35 @@
 
 import re
 import sys
+import string
 from grammar import *
 
-startshape_regex = re.compile(r"\s*startshape\s+(?P<startshapename>\w+)\n")
-
-shape_pattern = r"\s*(?<!start)shape\s+(?P<shapename>\w+)"
-shape_regex = re.compile(shape_pattern)
-
-rule_weight_pattern = r"\s+(?P<rulefixed>\*?\s*)(?P<ruleweight>[\d\-\.]*\s*)"
+startshape_pattern = r"\s*startshape\s+(?P<startshapename>\w+)\n"
+shape_header_pattern = r"\s*(?<!start)shape\s+(?P<shapename>\w+)"
+rule_header_pattern = r"\s*rule\s+"
+rule_weight_pattern = r"(?P<rulefixed>\*)?\s*(?P<ruleweight>[\d\-\.]*)\s*"
 rule_body_pattern = r"(?:\n\s*\{|\{)\n?(?P<rulebody>(?:[^\}]*\n?)+)\s*\}"
-single_rule_regex = re.compile(shape_regex.pattern + rule_weight_pattern + rule_body_pattern)
-rule_regex = re.compile(r"\s*rule" + rule_weight_pattern + rule_body_pattern)
+
+startshape_regex = re.compile(startshape_pattern)
+shape_header_regex = re.compile(shape_header_pattern)
+single_rule_regex = re.compile(shape_header_pattern + rule_weight_pattern + rule_body_pattern)
+rule_regex = re.compile(rule_header_pattern + rule_weight_pattern + rule_body_pattern)
 
 def grammar_from_file(filename):
-	return grammar_from_string(read_file(filename))
+	# Use filename with extension stripped off
+	extension = string.rfind(filename, ".cfdg")
+	if extension == -1:
+		grammarname = filename
+	else:
+		grammarname = filename[0:extension]
 
-def grammar_from_string(string):
-	gram = Grammar()
+	return grammar_from_string(read_file(filename), grammarname)
+
+def grammar_from_string(string, grammarname = None):
+	if grammarname == None:
+		grammarname = raw_input("Enter a name for grammar: '{0}...'".format(string[0:20]))
+
+	gram = Grammar(name = grammarname, body = string)
 	rules = []
 	shapes = []
 
@@ -32,7 +44,7 @@ def grammar_from_string(string):
 	startshape = Shape(startshapematch.groupdict()["startshapename"])
 
 	# Extract all shapes and rules
-	shapematches = list(shape_regex.finditer(string))
+	shapematches = list(shape_header_regex.finditer(string))
 	print "Shape matches: {0}".format(len(shapematches))
 
 	for i in range(len(shapematches)):
@@ -66,9 +78,8 @@ def grammar_from_string(string):
 				weight = 1.0
 			else:
 				weight = float(weightstr)
-			rulebody = match.groupdict()["rulebody"]
-			#print "fixed: {0}".format(match.groupdict()["rulefixed"])
-			fixed = match.groupdict()["rulefixed"] == ""
+			rulebody = match.group(0)
+			fixed = (match.groupdict()["rulefixed"] == None)
 			rule = Rule(rulebody, weight, fixed)
 			rules.append(rule)
 			shape.rules.append(rule)
@@ -99,7 +110,13 @@ if __name__ == "__main__":
 
 	grammarpath = sys.argv[1]
 	g = grammar_from_file(grammarpath)
+
+	print "fixed:"
+	print [rule.fixed for rule in g.rules]
+
+	print "weights:"
+	print [rule.weight for rule in g.rules]
 	print g
 	#s = read_file("grammars/clouds.cfdg")
-	#m = re.search(startshape_regex, s)
+	#m = re.search(startshape_header_regex, s)
 	#print m.groupdict()
