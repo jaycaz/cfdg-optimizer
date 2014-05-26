@@ -10,7 +10,7 @@ from grammar import *
 startshape_pattern = r"\s*startshape\s+(?P<startshapename>\w+)\n"
 shape_header_pattern = r"\s*(?<!start)shape\s+(?P<shapename>\w+)"
 rule_header_pattern = r"\s*rule\s+"
-rule_weight_pattern = r"(?P<rulefixed>\*)?\s*(?P<ruleweight>[\d\-\.]*)\s*"
+rule_weight_pattern = r"(?P<rulefixed>\*)\s*(?P<ruleweight>[\d\-\.]*)\s*"
 rule_body_pattern = r"(?:\n\s*\{|\{)\n?(?P<rulebody>(?:[^\}]*\n?)+)\s*\}"
 
 startshape_regex = re.compile(startshape_pattern)
@@ -81,6 +81,7 @@ def grammar_from_string(string, grammarname=None):
                 weight = float(weightstr)
             rulebody = match.group(0)
             fixed = (match.groupdict()["rulefixed"] is None)
+            if not fixed: print "rulefixed: ''".format(str(match.groupdict()["rulefixed"]))
             rule = Rule(rulebody, weight, fixed)
             rules.append(rule)
             shape.rules.append(rule)
