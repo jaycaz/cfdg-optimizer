@@ -1,0 +1,49 @@
+startshape flofree
+
+CF::Background = [b -1]
+
+shape flofree
+{ loop 5  [r (360/5) z -1]
+	petal [y 6]
+	sepals [s .58 b .64 h -24 sat 1 a -.2]
+	stamens [s 1.9 z 60 a -.6]
+	loop 5  [r (360/5)] stamens5 [s .42 r -172 y .72 z 80]
+}
+
+shape sepals
+{ loop 5  [r (360/5) z -1]
+	petal []
+}
+
+shape petal
+{ loop 2  [ f 90]
+	{loop 100  [s .9 .99 a -.04 y -.1 z 1]
+	spiral []}
+}
+
+shape spiral
+{ loop 555  [s .98 x -.2 y -.06 r 4 a -.02 z -1]
+	CIRCLE [ b 1 r 45 a -.8]
+}
+
+shape stamens5
+{	loop 5  [r (360/5) a -.2  s .96] stamens [ s .6 z 50  y .6]
+}
+
+shape stamens
+{
+	CIRCLE [ b .9 h 56 sat 2]
+loop 555  [r (360/555) z +.1 ] stamen [ a -.4]
+}
+
+shape stamen
+rule .004 {
+	CIRCLE [s .07 b .2 h 56 sat 2 y .5 a -.4]
+	CIRCLE [s .06 b .24 h 65 sat 2 y .51 a -.6 z 1]
+}
+
+rule .6 {stamen [y -.06 h .05 sat .004 s -.997 a +.004 z +2]}
+rule .024 {stamen [y -.14 h .05 sat .004 s -.9998 a +.004 z +2]}
+rule .004 {stamen [b .8]}
+rule .24 {stamen [b .09 sat 1]}
+

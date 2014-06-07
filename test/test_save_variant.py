@@ -10,8 +10,8 @@ import sys
 sys.path.append("..")
 
 import cfdg_parser as c
-import variant_gen as gen
-import save_grammar as save
+import variant_gen as vgen
+import save_utils as save
 
 g = None
 v = None
@@ -23,7 +23,7 @@ def run_test():
 
     filename = "clouds.cfdg"
     dirname = "clouds-variants"
-    newfilename = "{0}/clouds-variant.cfdg".format(dirname)
+    newfilename = "{0}/test-save-variant.cfdg".format(dirname)
     if not os.path.isdir(dirname):
         print "Creating directory {0}...".format(dirname)
         os.mkdir(dirname)
@@ -32,7 +32,7 @@ def run_test():
     g = c.grammar_from_file(filename)
 
     print "Creating variant from grammar..."
-    v = gen.generate_variant(g, 1, 5)
+    v = vgen.generate_variant(g, 1, 5)
 
     print "Saving variant to file: " + save.first_available_filename(newfilename)
     save.save_grammar(v, newfilename)
