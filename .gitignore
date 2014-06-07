@@ -1,4 +1,6 @@
 *.pyc
 *.swp
 *.*~
-test/clouds-variants
+test/test-save-variants
+test/test-save-exemplars
+.idea/
