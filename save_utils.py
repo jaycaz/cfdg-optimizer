@@ -3,38 +3,42 @@
 # April 2014
 
 import os.path
-import Image
-from pycurl import IOE_FAILRESTART
-import sys
 
 
 # Starting with <rootpath>, finds an appropriate digit to append
-# to avoid a file collision
-def first_available_filename(rootpath):
-    if not os.path.isfile(rootpath):
-        return rootpath
+# to avoid a filename collision
+def first_available_filename(tryname):
+    if not os.path.isfile(tryname):
+        return tryname
 
-    if rootpath[-5:] == ".cfdg":
-        strippath = rootpath[0:-5]
-    else:
-        strippath = rootpath
+    filepath, extension = os.path.splitext(tryname)
+
+    # Check if file already has a number appended
     i = 1
-    while 1:
-        filename = "{0}-{1}.cfdg".format(strippath, i)
+    dashindex = filepath.rfind('-')
+    if dashindex != -1:
+        if dashindex != len(filepath) - 1 and filepath[dashindex+1:].isdigit():
+            i = int(filepath[dashindex+1:])
+            filepath = filepath[:dashindex]
+
+    while True:
+        filename = "{0}-{1}{2}".format(filepath, i, extension)
         if not os.path.isfile(filename):
             return filename
         i += 1
 
 
-# Writes out grammar contents to new file <outfilename>
-# If <override> is true, it will write to <outfilename> without question
+# Tries to write out grammar contents to new file <tryfilename>
+# and returns actual file name used
+#
+# If <override> is true, it will write to <tryfilename> without question
 # If <override> is false, it will search for the first available filename
-#    using first_available_filename
-def save_grammar(grammar, outfilename, override=False):
+# using first_available_filename
+def save_grammar(grammar, tryfilename, override=False):
     if override:
-        usefilename = outfilename
+        usefilename = tryfilename
     else:
-        usefilename = first_available_filename(outfilename)
+        usefilename = first_available_filename(tryfilename)
 
     try:
         f = open(usefilename, 'w')
@@ -46,16 +50,17 @@ def save_grammar(grammar, outfilename, override=False):
         raise e
 
 
-# Writes out exemplar to an image file <outfilename>
-# If <override> is true, it will write to <outfilename> without question
+# Tries to write out exemplar to an image file <tryfilename>
+# and returns actual file name used
+#
+# If <override> is true, it will write to <tryfilename> without question
 # If <override> is false, it will search for the first available filename
-#    using first_available_filename
-def save_exemplar(image, outfilename, override=False):
+# using first_available_filename
+def save_exemplar(image, tryfilename, override=False):
     if override:
-        usefilename = outfilename
+        usefilename = tryfilename
     else:
-        usefilename = first_available_filename(outfilename)
-
+        usefilename = first_available_filename(tryfilename)
 
     try:
         image.save(usefilename)
@@ -67,4 +72,4 @@ def save_exemplar(image, outfilename, override=False):
               " perhaps image arg is incorrect".format(usefilename)
         raise e
 
-
+    return usefilename
