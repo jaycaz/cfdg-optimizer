@@ -30,23 +30,23 @@ def grammar_from_file(filename):
     return grammar_from_string(read_file(filename), grammarname)
 
 
-def grammar_from_string(string, grammarname=None):
+def grammar_from_string(grammartext, grammarname=None):
     if grammarname is None:
-        grammarname = raw_input("Enter a name for grammar: '{0}...'".format(string[0:20]))
+        grammarname = raw_input("Enter a name for grammar: '{0}...'".format(grammartext[0:20]))
 
-    gram = Grammar(grammarname, string)
+    gram = Grammar(grammarname, grammartext)
     rules = []
     shapes = []
 
     # Extract startshape
-    startshapematch = startshape_regex.search(string)
+    startshapematch = startshape_regex.search(grammartext)
     if not startshapematch:
         print "Error: Could not find start shape"
         raise Exception
     startshape = Shape(startshapematch.groupdict()["startshapename"])
 
     # Extract all shapes and rules
-    shapematches = list(shape_header_regex.finditer(string))
+    shapematches = list(shape_header_regex.finditer(grammartext))
     print "Shape matches: {0}".format(len(shapematches))
 
     for i in range(len(shapematches)):
@@ -61,14 +61,14 @@ def grammar_from_string(string, grammarname=None):
             nextshapematch = shapematches[i+1]
             nextshapestart = nextshapematch.start()
         else:
-            nextshapestart = len(string)
+            nextshapestart = len(grammartext)
 
-        singlerulematch = single_rule_regex.search(string, shapematch.start(), nextshapestart)
+        singlerulematch = single_rule_regex.search(grammartext, shapematch.start(), nextshapestart)
         if singlerulematch:
             # Shape has only one rule
             rulematches = [singlerulematch]
         else:
-            rulematches = list(rule_regex.finditer(string, shapematch.end(), nextshapestart))
+            rulematches = list(rule_regex.finditer(grammartext, shapematch.end(), nextshapestart))
 
         # create rule for each match
         print "\t{0} rule{1} found for shape '{2}'\n".format(
@@ -81,10 +81,11 @@ def grammar_from_string(string, grammarname=None):
                 weight = float(weightstr)
             rulebody = match.group(0)
             fixed = (match.groupdict()["rulefixed"] is None)
-            if not fixed: print "rulefixed: ''".format(str(match.groupdict()["rulefixed"]))
-            rule = Rule(rulebody, weight, fixed)
-            rules.append(rule)
-            shape.rules.append(rule)
+            if not fixed:
+                print "rulefixed: ''".format(str(match.groupdict()["rulefixed"]))
+            newrule = Rule(rulebody, weight, fixed)
+            rules.append(newrule)
+            shape.rules.append(newrule)
 
     gram.shapes = shapes
     gram.rules = rules
@@ -101,8 +102,8 @@ def read_file(filename):
     finally:
         f.close()
 
-    string = "".join(lines)
-    return string
+    filebody = "".join(lines)
+    return filebody
 
 
 if __name__ == "__main__":

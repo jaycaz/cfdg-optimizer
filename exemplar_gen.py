@@ -1,14 +1,13 @@
 # Jordan Cazamias
 # CFDG Optimizer
 # June 2014
-from reportlab.platypus.para import Para
 
 import subprocess as proc
-import save_utils as save
 from ImageFile import Parser
 
 MAX_SHAPES = 1000000
 COMMAND_STR = "cfdg"
+
 
 # Using CFDG, creates an exemplar from the provided grammar,
 # retrieves the image data, and returns the image data
@@ -18,7 +17,7 @@ COMMAND_STR = "cfdg"
 # 'width': width, in pixels, of image
 # 'height': height, in pixels, of image
 def generate_exemplar(grammar, **kwargs):
-    commandargs = "-" # specifies to cfdg that grammar file will come from stdin
+    commandargs = "-"  # specifies to cfdg that grammar file will come from stdin
 
     # process keyword arguments
     if 'maxshapes' in kwargs:
@@ -47,6 +46,7 @@ def generate_exemplar(grammar, **kwargs):
         raise e
 
     return img
+
 
 # Convenience function to create many different exemplars
 # from one grammar at once

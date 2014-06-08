@@ -20,12 +20,20 @@ class Shape:
 
 
 class Grammar:
-    def __init__(self, name="", body="", shapes=[], rules=[], startshape=Shape()):
+    def __init__(self, name="", body="", shapes=None, rules=None, startshape=Shape()):
         self.name = name
         self.body = body
-        self.shapes = shapes
-        self.rules = rules
         self.startshape = startshape
+
+        if shapes is None:
+            self.shapes = []
+        else:
+            self.shapes = shapes
+
+        if rules is None:
+            self.rules = []
+        else:
+            self.rules = rules
 
     def __repr__(self):
         string = "Grammar \n{\n"

@@ -12,6 +12,7 @@ import cfdg_parser as c
 import exemplar_gen as egen
 import save_utils as save
 
+
 def run_test():
     testgrammarfile = "flofree.cfdg"
     testdir = "test-save-exemplar"
@@ -26,7 +27,6 @@ def run_test():
 
     print "Running CFDG with grammar body..."
     ex_img = egen.generate_exemplar(g)
-
 
     print "Saving exemplar image to '{0}'...".format(newfilename)
     save.save_exemplar(ex_img, newfilename)

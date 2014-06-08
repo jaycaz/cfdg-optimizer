@@ -13,6 +13,7 @@ import cfdg_parser as c
 import exemplar_gen as egen
 import save_utils as save
 
+
 def run_test():
     numexemplars = 10
     testgrammarfile = "flofree.cfdg"
