@@ -1,6 +1,6 @@
 # Jordan Cazamias
 # CFDG Optimizer
-# April 2014
+# June 2014
 
 # test_save_exemplar.py: test generating an exemplar from a grammar and saving it to a file
 

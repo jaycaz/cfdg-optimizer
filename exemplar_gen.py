@@ -14,9 +14,9 @@ COMMAND_STR = "cfdg"
 # retrieves the image data, and returns the image data
 #
 # Available kwargs:
-# maxshapes: maximum number of shapes
-# width: width, in pixels, of image
-# height: height, in pixels, of image
+# 'maxshapes': maximum number of shapes
+# 'width': width, in pixels, of image
+# 'height': height, in pixels, of image
 def generate_exemplar(grammar, **kwargs):
     commandargs = "-" # specifies to cfdg that grammar file will come from stdin
 
@@ -47,5 +47,24 @@ def generate_exemplar(grammar, **kwargs):
         raise e
 
     return img
+
+# Convenience function to create many different exemplars
+# from one grammar at once
+#
+# debug: if true, prints debug information
+def generate_exemplars(grammar, numexemplars, debug=False, **kwargs):
+    images = []
+
+    for i in range(numexemplars):
+        try:
+            img = generate_exemplar(grammar, **kwargs)
+            images.append(img)
+            if debug:
+                print "Created exemplar {0} of {1}".format(i+1, numexemplars)
+        except Exception as e:
+            print "Error creating exemplar number {0} in n_generate_exemplars".format(i)
+            raise e
+
+    return images
 
 
