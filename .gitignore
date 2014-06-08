@@ -2,6 +2,6 @@
 *.swp
 *.*~
 test/test-save-variants
-test/test-save-exemplars
+test/test-save-exemplar
 test/test-save-exemplars
 .idea/
