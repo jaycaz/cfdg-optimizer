@@ -2,6 +2,7 @@
 # CFDG Optimizer
 # April 2014
 
+import save_utils
 
 class Rule:
     def __init__(self, body="", weight=1, fixed=True):
@@ -48,3 +49,25 @@ class Grammar:
         string += "}"
         return string
 
+    # Tries to write out grammar contents to new file <tryfilename>
+    # and returns actual file name used
+    #
+    # If <override> is true, it will write to <tryfilename> without question
+    # If <override> is false, it will search for the first available filename
+    # using first_available_filename
+    def save(self, tryfilename, override=False):
+        if override:
+            usefilename = tryfilename
+        else:
+            usefilename = save_utils.first_available_filename(tryfilename)
+
+        try:
+            f = open(usefilename, 'w')
+            f.write(self.body)
+            f.close()
+        except IOError as e:
+            print "Error saving grammar '{0}' to {1}".format(
+                self.name, usefilename)
+            raise e
+
+        return usefilename

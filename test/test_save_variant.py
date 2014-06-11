@@ -35,7 +35,7 @@ def run_test():
     v = vgen.generate_variant(g, 1, 5)
 
     print "Saving variant to file: " + save.first_available_filename(newfilename)
-    save.save_grammar(v, newfilename)
+    v.save(newfilename)
 
 
 if __name__ == "__main__":

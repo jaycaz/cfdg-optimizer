@@ -4,3 +4,4 @@
 test/test-save-variants
 test/test-save-exemplar
 test/test-save-exemplars
+.idea/*

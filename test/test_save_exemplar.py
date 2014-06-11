@@ -26,10 +26,10 @@ def run_test():
     g = c.grammar_from_file(testgrammarfile)
 
     print "Running CFDG with grammar body..."
-    ex_img = egen.generate_exemplar(g)
+    exemplar = egen.generate_exemplar(g)
 
     print "Saving exemplar image to '{0}'...".format(newfilename)
-    save.save_exemplar_image(ex_img, newfilename)
+    exemplar.save_image(newfilename)
 
     print "Exemplar successfully saved!"
 
