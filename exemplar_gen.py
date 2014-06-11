@@ -4,6 +4,7 @@
 
 import subprocess as proc
 from ImageFile import Parser
+from exemplar import Exemplar
 
 MAX_SHAPES = 1000000
 COMMAND_STR = "cfdg"
@@ -40,12 +41,13 @@ def generate_exemplar(grammar, **kwargs):
     try:
         p = Parser()
         p.feed(cfdg_output)
-        img = p.close()
+        image = p.close()
     except IOError as e:
         print("Error parsing CFDG output for grammar '{0}' into an image file".format(grammar.name))
         raise e
 
-    return img
+    exemplar = Exemplar(image)
+    return exemplar
 
 
 # Convenience function to create many different exemplars
@@ -53,18 +55,18 @@ def generate_exemplar(grammar, **kwargs):
 #
 # debug: if true, prints debug information
 def generate_exemplars(grammar, numexemplars, debug=False, **kwargs):
-    images = []
+    exemplars = []
 
     for i in range(numexemplars):
         try:
             img = generate_exemplar(grammar, **kwargs)
-            images.append(img)
+            exemplars.append(img)
             if debug:
                 print "Created exemplar {0} of {1}".format(i+1, numexemplars)
         except Exception as e:
             print "Error creating exemplar number {0} in n_generate_exemplars".format(i)
             raise e
 
-    return images
+    return exemplars
 
 

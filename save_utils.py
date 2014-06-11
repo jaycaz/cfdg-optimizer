@@ -56,14 +56,14 @@ def save_grammar(grammar, tryfilename, override=False):
 # If <override> is true, it will write to <tryfilename> without question
 # If <override> is false, it will search for the first available filename
 # using first_available_filename
-def save_exemplar(image, tryfilename, override=False):
+def save_exemplar_image(exemplar, tryfilename, override=False):
     if override:
         usefilename = tryfilename
     else:
         usefilename = first_available_filename(tryfilename)
 
     try:
-        image.save(usefilename)
+        exemplar.image.save(usefilename)
     except IOError as e:
         print "IOError saving image to {0}".format(usefilename)
         raise e

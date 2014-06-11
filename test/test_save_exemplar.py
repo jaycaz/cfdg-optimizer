@@ -29,7 +29,7 @@ def run_test():
     ex_img = egen.generate_exemplar(g)
 
     print "Saving exemplar image to '{0}'...".format(newfilename)
-    save.save_exemplar(ex_img, newfilename)
+    save.save_exemplar_image(ex_img, newfilename)
 
     print "Exemplar successfully saved!"
 
