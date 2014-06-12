@@ -4,6 +4,7 @@
 
 import save_utils
 
+
 class Rule:
     def __init__(self, body="", weight=1, fixed=True):
         self.body = body

@@ -9,6 +9,7 @@ import pickle
 from PIL import Image
 import save_utils
 
+
 class Exemplar:
     def __init__(self, image=None, score=None):
         self.image = image
@@ -31,7 +32,6 @@ class Exemplar:
 
         pickle.dump(exemplar_data, tofile)
 
-
     # Unpickles an exemplar object from existing file
     # and stores values in this object
     def unpickle(self, fromfile):
@@ -46,7 +46,6 @@ class Exemplar:
 
         self.image = image
         self.score = score
-
 
     # Tries to write out exemplar to an image file <tryfilename>
     # and returns actual file name used
