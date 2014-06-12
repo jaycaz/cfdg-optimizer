@@ -28,7 +28,8 @@ def run_test():
     print "Running CFDG with grammar body..."
     exemplar = egen.generate_exemplar(g)
 
-    print "Saving exemplar image to '{0}'...".format(newfilename)
+    print "Saving exemplar image to '{0}'...".format(
+        save.first_available_filename(newfilename))
     exemplar.save_image(newfilename)
 
     print "Exemplar successfully saved!"

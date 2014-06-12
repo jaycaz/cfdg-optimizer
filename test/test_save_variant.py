@@ -22,7 +22,7 @@ def run_test():
     global v
 
     filename = "clouds.cfdg"
-    dirname = "clouds-variants"
+    dirname = "test-save-variant"
     newfilename = "{0}/test-save-variant.cfdg".format(dirname)
     if not os.path.isdir(dirname):
         print "Creating directory {0}...".format(dirname)

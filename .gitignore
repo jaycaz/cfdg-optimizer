@@ -1,7 +1,7 @@
 *.pyc
 *.swp
 *.*~
-test/test-save-variants
+test/test-save-variant
 test/test-save-exemplar
 test/test-save-exemplars
 .idea/*

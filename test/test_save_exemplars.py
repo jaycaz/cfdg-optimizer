@@ -38,8 +38,9 @@ def run_test():
     # Saving exemplars to separate files
     print "Exemplars successfully generated. Saving exemplars to files..."
     for i, ex in list(enumerate(exemplars)):
-        savefilename = ex.save_image(savefilename)
+        savefilename = save.first_available_filename(savefilename)
         print "Saving exemplar {0} of {1} to {2}".format(i+1, numexemplars, savefilename)
+        ex.save_image(savefilename)
 
     print "All exemplars successfully saved!"
 
