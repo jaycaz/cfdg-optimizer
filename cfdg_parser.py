@@ -9,13 +9,13 @@ from grammar import *
 
 startshape_pattern = r"\s*startshape\s+(?P<startshapename>\w+)\n"
 shape_header_pattern = r"\s*(?<!start)shape\s+(?P<shapename>\w+)"
-rule_header_pattern = r"\s*rule\s+"
-rule_weight_pattern = r"(?P<rulefixed>\*)\s*(?P<ruleweight>[\d\-\.]*)\s*"
+rule_header_pattern = r"\s*rule\s*"
+rule_weight_pattern = r"(?P<rulefixed>\*?)\s*(?P<ruleweight>[\d\.]*)\s*"
 rule_body_pattern = r"(?:\n\s*\{|\{)\n?(?P<rulebody>(?:[^\}]*\n?)+)\s*\}"
 
 startshape_regex = re.compile(startshape_pattern)
 shape_header_regex = re.compile(shape_header_pattern)
-single_rule_regex = re.compile(shape_header_pattern + rule_weight_pattern + rule_body_pattern)
+single_rule_regex = re.compile(shape_header_pattern + rule_body_pattern)
 rule_regex = re.compile(rule_header_pattern + rule_weight_pattern + rule_body_pattern)
 
 
@@ -74,15 +74,16 @@ def grammar_from_string(grammartext, grammarname=None):
         print "\t{0} rule{1} found for shape '{2}'\n".format(
             len(rulematches), "" if len(rulematches) == 1 else "s", shapename)
         for match in rulematches:
-            weightstr = match.groupdict()["ruleweight"]
-            if weightstr == "":
-                weight = 1.0
+            #weightstr = match.groupdict()["ruleweight"]
+            if "ruleweight" in match.groupdict() and match.groupdict()["ruleweight"] != "":
+                weight = float(match.groupdict()["ruleweight"])
             else:
-                weight = float(weightstr)
+                weight = 1.0
             rulebody = match.group(0)
-            fixed = (match.groupdict()["rulefixed"] is None)
-            if not fixed:
-                print "rulefixed: ''".format(str(match.groupdict()["rulefixed"]))
+            fixed = ("rulefixed" not in match.groupdict() or
+                     match.groupdict()["rulefixed"] is None)
+            #if not fixed:
+            #    print "rulefixed: '{0}'".format(repr(match.groupdict()["rulefixed"]))
             newrule = Rule(rulebody, weight, fixed)
             rules.append(newrule)
             shape.rules.append(newrule)
