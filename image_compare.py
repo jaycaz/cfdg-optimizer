@@ -9,8 +9,8 @@ MIN_VALUE = -1.0
 MAX_VALUE = 1.0
 
 
-# Blackbox comparison function to perform
-# image comparison in the rest of the module
+# Blackbox comparison function to perform PIL
+# Image comparison in the rest of the module
 def compare(img1, img2, **kwargs):
     # Optional keyword arguments:
     # - gaussian_kernel_width

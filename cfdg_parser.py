@@ -2,21 +2,35 @@
 #  CFDG Optimizer
 #  April 2014
 
+import copy
 import re
 import sys
 import string
+
 from grammar import *
 
+WILDCARD = r"\*"
+
+# Patterns for parsing CFDG files
 startshape_pattern = r"\s*startshape\s+(?P<startshapename>\w+)\n"
 shape_header_pattern = r"\s*(?<!start)shape\s+(?P<shapename>\w+)"
 rule_header_pattern = r"\s*rule\s*"
-rule_weight_pattern = r"(?P<rulefixed>\*?)\s*(?P<ruleweight>[\d\.]*)\s*"
+rule_weight_pattern = r"(?P<rulefixed>{0}?)\s*(?P<ruleweight>[\d\.]*)\s*".format(WILDCARD)
 rule_body_pattern = r"(?:\n\s*\{|\{)\n?(?P<rulebody>(?:[^\}]*\n?)+)\s*\}"
 
 startshape_regex = re.compile(startshape_pattern)
 shape_header_regex = re.compile(shape_header_pattern)
-single_rule_regex = re.compile(shape_header_pattern + rule_body_pattern)
-rule_regex = re.compile(rule_header_pattern + rule_weight_pattern + rule_body_pattern)
+rule_weight_regex = re.compile(rule_weight_pattern)
+single_rule_header_regex = re.compile(shape_header_pattern +
+                                      rule_weight_pattern)
+single_rule_regex = re.compile(shape_header_pattern +
+                               rule_weight_pattern +
+                               rule_body_pattern)
+rule_header_regex = re.compile(rule_header_pattern +
+                               rule_weight_pattern)
+rule_regex = re.compile(rule_header_pattern +
+                        rule_weight_pattern +
+                        rule_body_pattern)
 
 
 def grammar_from_file(filename):
@@ -27,7 +41,7 @@ def grammar_from_file(filename):
     else:
         grammarname = filename[0:extension]
 
-    return grammar_from_string(read_file(filename), grammarname)
+    return grammar_from_string(_read_file(filename), grammarname)
 
 
 def grammar_from_string(grammartext, grammarname=None):
@@ -37,12 +51,12 @@ def grammar_from_string(grammartext, grammarname=None):
     gram = Grammar(grammarname, grammartext)
     rules = []
     shapes = []
+    clean_body = ""
 
     # Extract startshape
     startshapematch = startshape_regex.search(grammartext)
     if not startshapematch:
-        print "Error: Could not find start shape"
-        raise Exception
+        raise Exception("Error: Could not find start shape")
     startshape = Shape(startshapematch.groupdict()["startshapename"])
 
     # Extract all shapes and rules
@@ -79,9 +93,10 @@ def grammar_from_string(grammartext, grammarname=None):
                 weight = float(match.groupdict()["ruleweight"])
             else:
                 weight = 1.0
+
             rulebody = match.group(0)
             fixed = ("rulefixed" not in match.groupdict() or
-                     match.groupdict()["rulefixed"] is None)
+                     match.groupdict()["rulefixed"] == "")
             #if not fixed:
             #    print "rulefixed: '{0}'".format(repr(match.groupdict()["rulefixed"]))
             newrule = Rule(rulebody, weight, fixed)
@@ -94,8 +109,35 @@ def grammar_from_string(grammartext, grammarname=None):
 
     return gram
 
+# Returns grammar body that can be parsed by CFDG
+def clean_body(grammar):
+    newbody = copy.deepcopy(grammar.body)
+    wildcard_regex = re.compile(r"{0}\s*".format(WILDCARD))
 
-def read_file(filename):
+    def remove_wildcard(match):
+        wildcard_match = wildcard_regex.search(
+            newbody, match.start(), match.end())
+
+        if wildcard_match is None:
+            return newbody
+
+        string = wildcard_regex.sub(repl="", string=newbody, count=1)
+        return string
+
+    # Remove all WILDCARD markers in rule headers
+
+    #for rulematch in reversed(list(single_rule_regex.finditer(newbody))):
+    #    newbody = remove_wildcard(rulematch)
+    #for rulematch in reversed(list(rule_regex.finditer(newbody))):
+    #    newbody = remove_wildcard(rulematch)
+
+    #TODO: Fix this so it doesn't remove all asterisks in grammar body
+    newbody = wildcard_regex.sub(repl="", string=newbody)
+
+    return newbody
+
+
+def _read_file(filename):
     f = open(filename, 'r')
 
     try:
@@ -122,6 +164,6 @@ if __name__ == "__main__":
     print "weights:"
     print [rule.weight for rule in g.rules]
     print g
-    #s = read_file("grammars/clouds.cfdg")
+    #s = _read_file("grammars/clouds.cfdg")
     #m = re.search(startshape_header_regex, s)
     #print m.groupdict()

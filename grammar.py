@@ -2,8 +2,10 @@
 # CFDG Optimizer
 # April 2014
 
-import save_utils
+import copy
 
+import save_utils
+import cfdg_parser
 
 class Rule:
     def __init__(self, body="", weight=1, fixed=True):
@@ -22,7 +24,8 @@ class Shape:
 
 
 class Grammar:
-    def __init__(self, name="", body="", shapes=None, rules=None, startshape=Shape()):
+    def __init__(self, name="", body="", shapes=None,
+                 rules=None, startshape=Shape()):
         self.name = name
         self.body = body
         self.startshape = startshape

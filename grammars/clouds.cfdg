@@ -23,7 +23,7 @@ shape cloud
 }
 
 shape side
-rule {
+rule * {
 	step [ ]
 	cloud [ x -1 a 0.001 ] 
 // Values up to 'a 0.005' or such are also good in this rule — increasing it makes the cloud thicker.
@@ -38,18 +38,18 @@ rule {
 rule {}
 
 shape horiz
-rule {
+rule * {
 	step [ ]
 	rotatecloud [ y -1 ]
 }
 
-rule {
+rule * {
 	step [ ]
 	rotatecloud [ y 1 ]
 }
 
 shape rotatecloud
-rule {
+rule * {
 	cloud [ r 15 ]
 }
 
@@ -58,7 +58,7 @@ rule {
 }
 
 shape step
-rule {
+rule * {
 	SQUARE [ b 1 ]
 }
 

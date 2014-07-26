@@ -40,7 +40,7 @@ def generate_variant(grammar, roundnum, totalrounds, seed=None):
 
         # Update rule weight
         newweight = gen_weight(rule.weight, calc_stddev(roundnum, totalrounds))
-        print "{0} -> {1}".format(rule.weight, newweight)
+        # print "{0} -> {1}".format(rule.weight, newweight)
         rule.weight = newweight
 
         # Update rule body string and overall grammar string with new weight
@@ -55,7 +55,7 @@ def generate_variant(grammar, roundnum, totalrounds, seed=None):
             rule.body[rulematch.end("ruleweight"):])
 
         newgrammarbody = newgrammar.body.replace(rule.body, newrulebody)
-        print "***************\n{0} \n------->\n {1}\n****************".format(rule.body, newrulebody)
+        # print "***************\n{0} \n------->\n {1}\n****************".format(rule.body, newrulebody)
 
         rule.body = newrulebody
         newgrammar.body = newgrammarbody

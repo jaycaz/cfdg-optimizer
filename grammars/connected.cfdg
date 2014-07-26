@@ -35,16 +35,16 @@ rule 10000 {
 	]
 }
 
-rule 20 {
+rule * 20 {
   start [rotate -60 brightness 0.5 size 0.9]
 	start [rotate  60 brightness 0.5 size 0.9]
 }
 
-rule 1 {
+rule * 1 {
 	streak [flip 90]
 }
 
-rule 10 {
+rule * 10 {
   implode [hue 170 brightness 0.5 alpha -1 z -10]
 }
 

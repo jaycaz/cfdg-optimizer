@@ -4,10 +4,11 @@
 
 import subprocess as proc
 from ImageFile import Parser
+
+from cfdg_parser import clean_body
 from exemplar import Exemplar
 
 MAX_SHAPES = 1000000
-COMMAND_STR = "cfdg"
 
 
 # Using CFDG, creates an exemplar from the provided grammar,
@@ -18,21 +19,29 @@ COMMAND_STR = "cfdg"
 # 'width': width, in pixels, of image
 # 'height': height, in pixels, of image
 def generate_exemplar(grammar, **kwargs):
-    commandargs = "-"  # specifies to cfdg that grammar file will come from stdin
+    commandstr = "cfdg"
 
     # process keyword arguments
     if 'maxshapes' in kwargs:
-        commandargs += " -m {0}".format(kwargs['maxshapes'])
+        commandstr += " -m {0}".format(kwargs['maxshapes'])
+    else:
+        commandstr += " -m {0}".format(MAX_SHAPES)
+
     if 'width' in kwargs:
-        commandargs += " -w {0}".format(kwargs['width'])
+        commandstr += " -w {0}".format(kwargs['width'])
     if 'height' in kwargs:
-        commandargs += " -h {0}".format(kwargs['height'])
+        commandstr += " -h {0}".format(kwargs['height'])
+
+    commandstr += " -" # specifies to cfdg that grammar file will come from stdin
 
     # run cfdg, passing in grammar.body as the input
     try:
-        cfdg_proccess = proc.Popen([COMMAND_STR, commandargs], stdin=proc.PIPE, stdout=proc.PIPE)
-        comm = cfdg_proccess.communicate(input=grammar.body)
+        cfdg_proccess = proc.Popen(commandstr, shell=True,
+                                   stdin=proc.PIPE, stdout=proc.PIPE)
+        comm = cfdg_proccess.communicate(input=clean_body(grammar))
         cfdg_output = comm[0]
+        if cfdg_output == '':
+            raise Exception("CFDG output is empty.")
     except Exception as e:
         print("Error using CFDG to parse grammar '{0}'".format(grammar.name))
         raise e
@@ -46,8 +55,8 @@ def generate_exemplar(grammar, **kwargs):
         print("Error parsing CFDG output for grammar '{0}' into an image file".format(grammar.name))
         raise e
 
-    exemplar = Exemplar(image)
-    return exemplar
+    ex = Exemplar(image=image)
+    return ex
 
 
 # Convenience function to create many different exemplars
