@@ -3,10 +3,11 @@
 # June 2014
 
 import subprocess as proc
-from ImageFile import Parser
+from PIL.ImageFile import Parser
 
-from cfdg_parser import clean_body
-from exemplar import Exemplar
+from cfdg_optimizer.grammar.gramparse import clean_body
+from cfdg_optimizer.exemplar import Exemplar
+
 
 MAX_SHAPES = 1000000
 

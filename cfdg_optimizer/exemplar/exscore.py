@@ -2,17 +2,18 @@
 # CFDG Optimizer
 # June 2014
 
-# exemplar_scoring.py: functionality for scoring exemplars
+# exscore.py: functionality for scoring exemplars
 
 import os
 
 from PIL import Image
 
-import image_compare
-
 # Returns compiled score by comparing exemplar
 # to all images in test_img_dir
 # Currently, compiled score is simply the mean score
+from cfdg_optimizer.optimize import imgcomp
+
+
 def score_exemplar(exemplar, test_image_dir):
     individual_scores = []
 
@@ -30,7 +31,7 @@ def score_exemplar(exemplar, test_image_dir):
         except IOError:
             continue
 
-        image_score = image_compare.compare(exemplar.image, test_image)
+        image_score = imgcomp.compare(exemplar.image, test_image)
         individual_scores.append(image_score)
 
     if not individual_scores:

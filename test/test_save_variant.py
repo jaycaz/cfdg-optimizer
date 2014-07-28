@@ -7,11 +7,10 @@
 
 import os
 import sys
-sys.path.append("..")
 
-import cfdg_parser as c
-import variant_gen as vgen
-import save_utils as save
+from cfdg_optimizer.grammar import gramgen, gramparse
+from cfdg_optimizer.utils import saveutils as save
+
 
 g = None
 v = None
@@ -29,14 +28,15 @@ def run_test():
         os.mkdir(dirname)
 
     print "Reading grammar from file: " + filename + "..."
-    g = c.grammar_from_file(filename)
+    g = gramparse.grammar_from_file(filename)
 
     print "Creating variant from grammar..."
-    v = vgen.generate_variant(g, 1, 5)
+    v = gramgen.generate_variant(g, 1, 5)
 
     print "Saving variant to file: " + save.first_available_filename(newfilename)
     v.save(newfilename)
 
+    print "Variant successfully saved!"
 
 if __name__ == "__main__":
     run_test()

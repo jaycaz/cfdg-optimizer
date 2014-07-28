@@ -6,7 +6,8 @@ import copy
 import math
 import random as rand
 
-import cfdg_parser as c
+from cfdg_optimizer.grammar import gramparse
+
 
 MAX_WEIGHT = 100
 INIT_STDDEV = 2
@@ -45,9 +46,9 @@ def generate_variant(grammar, roundnum, totalrounds, seed=None):
 
         # Update rule body string and overall grammar string with new weight
         # TODO: Change to avoid changing a different rule if two identical rules in the grammar
-        rulematch = c.rule_regex.search(rule.body)
+        rulematch = gramparse.rule_regex.search(rule.body)
         if rulematch is None:
-            rulematch = c.single_rule_regex.search(rule.body)
+            rulematch = gramparse.single_rule_regex.search(rule.body)
 
         newrulebody = "{0}{1}{2}".format(
             rule.body[:rulematch.start("ruleweight")],

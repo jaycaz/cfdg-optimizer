@@ -2,10 +2,8 @@
 # CFDG Optimizer
 # April 2014
 
-import copy
+from cfdg_optimizer.utils import saveutils
 
-import save_utils
-import cfdg_parser
 
 class Rule:
     def __init__(self, body="", weight=1, fixed=True):
@@ -63,7 +61,7 @@ class Grammar:
         if override:
             usefilename = tryfilename
         else:
-            usefilename = save_utils.first_available_filename(tryfilename)
+            usefilename = saveutils.first_available_filename(tryfilename)
 
         try:
             f = open(usefilename, 'w')

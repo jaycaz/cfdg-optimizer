@@ -7,7 +7,8 @@ import re
 import sys
 import string
 
-from grammar import *
+from cfdg_optimizer.grammar import *
+
 
 WILDCARD = r"\*"
 
@@ -164,6 +165,6 @@ if __name__ == "__main__":
     print "weights:"
     print [rule.weight for rule in g.rules]
     print g
-    #s = _read_file("grammars/clouds.cfdg")
+    #s = _read_file("testgrammars/clouds.cfdg")
     #m = re.search(startshape_header_regex, s)
     #print m.groupdict()

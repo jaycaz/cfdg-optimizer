@@ -7,11 +7,12 @@
 import os
 import shutil
 import sys
-sys.path.append("..")
 
-import cfdg_parser as c
-import exemplar_gen as egen
-import save_utils as save
+from cfdg_optimizer.exemplar import exgen as egen
+from cfdg_optimizer.grammar import gramparse as c
+from cfdg_optimizer.utils import saveutils as save
+
+
 
 
 def run_test():

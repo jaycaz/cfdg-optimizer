@@ -9,7 +9,7 @@ MIN_VALUE = -1.0
 MAX_VALUE = 1.0
 
 
-# Blackbox comparison function to perform PIL
+# Blackbox comparison function to perform Pillow
 # Image comparison in the rest of the module
 def compare(img1, img2, **kwargs):
     # Optional keyword arguments:

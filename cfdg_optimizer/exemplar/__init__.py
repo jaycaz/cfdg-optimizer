@@ -5,9 +5,11 @@
 # exemplar.py: stores exemplar class
 
 import pickle
+import sys
 
 from PIL import Image
-import save_utils
+
+from cfdg_optimizer.utils import saveutils
 
 
 class Exemplar:
@@ -23,7 +25,7 @@ class Exemplar:
                 'mode': self.image.mode,
                 'size': self.image.size,
                 'data': self.image.tostring(),
-            }
+                }
 
         exemplar_data = {
             'image_data': image_data,
@@ -57,7 +59,7 @@ class Exemplar:
         if override:
             usefilename = tryfilename
         else:
-            usefilename = save_utils.first_available_filename(tryfilename)
+            usefilename = saveutils.first_available_filename(tryfilename)
 
         try:
             self.image.save(usefilename)

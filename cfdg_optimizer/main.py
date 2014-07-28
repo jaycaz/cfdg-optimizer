@@ -2,10 +2,8 @@
 # CFDG Optimizer
 # July 2014
 
-import cfdg_parser
-import variant_gen
-import exemplar_gen
-import exemplar_scoring
+from exemplar import exgen, exscore
+from grammar import gramgen, gramparse
 
 NUM_VARIANTS = 5
 NUM_ROUNDS = 5
@@ -16,7 +14,7 @@ NUM_EXEMPLARS = 10
 # images in test directory <test_images_dir>
 def run(grammar_filename, test_image_dir, **kwargs):
     kwargs['maxshapes'] = 500000
-    grammar = cfdg_parser.grammar_from_file(grammar_filename)
+    grammar = gramparse.grammar_from_file(grammar_filename)
     best_variant = None
     best_variant_score = None
     best_variant_version = None
@@ -30,20 +28,20 @@ def run(grammar_filename, test_image_dir, **kwargs):
         # Generate and score round variants
         for variantnum in range(NUM_VARIANTS):
             print "Creating variant {0} of {1}".format(variantnum+1, NUM_VARIANTS)
-            variant = variant_gen.generate_variant(grammar, roundnum, NUM_ROUNDS)
+            variant = gramgen.generate_variant(grammar, roundnum, NUM_ROUNDS)
             variants.append(variant)
 
             # Generate and score exemplars for every variant
             ex_scores = []
             for exemplarnum in range(NUM_EXEMPLARS):
                 print "\tCreating exemplar {0}-{1}...".format(variantnum+1, exemplarnum+1)
-                exemplar = exemplar_gen.generate_exemplar(variant, **kwargs)
-                score = exemplar_scoring.score_exemplar(exemplar, test_image_dir)
+                exemplar = exgen.generate_exemplar(variant, **kwargs)
+                score = exscore.score_exemplar(exemplar, test_image_dir)
                 print "\t\tExemplar score: {0}".format(score)
                 ex_scores.append(score)
 
             # Find compiled score for variant
-            variant_score = exemplar_scoring.compile_scores(ex_scores)
+            variant_score = exscore.compile_scores(ex_scores)
             scoremap[variant] = variant_score
             "Variant {0} score: {1}".format(variantnum+1, variant_score)
 
@@ -68,4 +66,4 @@ def run(grammar_filename, test_image_dir, **kwargs):
 
 
 if __name__ == "__main__":
-    run("grammars/clouds.cfdg", "testclouds")
+    run("test/testgrammars/clouds.cfdg", "test/testclouds")

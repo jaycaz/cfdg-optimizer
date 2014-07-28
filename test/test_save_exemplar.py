@@ -6,11 +6,12 @@
 
 import os
 import sys
-sys.path.append("..")
 
-import cfdg_parser as c
-import exemplar_gen as egen
-import save_utils as save
+from cfdg_optimizer.exemplar import exgen
+from cfdg_optimizer.grammar import gramparse
+from cfdg_optimizer.utils import saveutils
+
+
 
 
 def run_test():
@@ -23,13 +24,13 @@ def run_test():
 
     # Create grammar
     print "Creating grammar from file '{0}'...".format(testgrammarfile)
-    g = c.grammar_from_file(testgrammarfile)
+    g = gramparse.grammar_from_file(testgrammarfile)
 
     print "Running CFDG with grammar body..."
-    exemplar = egen.generate_exemplar(g)
+    exemplar = exgen.generate_exemplar(g)
 
     print "Saving exemplar image to '{0}'...".format(
-        save.first_available_filename(newfilename))
+        saveutils.first_available_filename(newfilename))
     exemplar.save_image(newfilename)
 
     print "Exemplar successfully saved!"

@@ -1,0 +1,68 @@
+startshape startclouds
+CF::Background = [ b -0.1 h 220 sat 0.7 ]
+
+shape startclouds
+{
+	loop 10 [ x 1 ] startcloud [ a -1 ]
+}
+
+shape startcloud
+rule * 5.56837891223 {
+	side [ y -0.5 ]
+}
+
+rule * 19.2689979188{
+	side [ y 0.5 ]
+}
+
+shape cloud
+{
+	step [ ]
+	horiz [ s 0.7 ]
+	side [ ]
+}
+
+shape side
+rule {
+	step [ ]
+	cloud [ x -1 a 0.001 ] 
+// Values up to 'a 0.005' or such are also good in this rule — increasing it makes the cloud thicker.
+}
+
+rule {
+	step [ ]
+	cloud [ x 1 a 0.001 ]
+// Values up to 'a 0.005' or such are also good in this rule — increasing it makes the cloud thicker.
+}
+
+rule {}
+
+shape horiz
+rule {
+	step [ ]
+	rotatecloud [ y -1 ]
+}
+
+rule {
+	step [ ]
+	rotatecloud [ y 1 ]
+}
+
+shape rotatecloud
+rule {
+	cloud [ r 15 ]
+}
+
+rule {
+	cloud [ r -15 ]
+}
+
+shape step
+rule {
+	SQUARE [ b 1 ]
+}
+
+rule {
+	CIRCLE [ b 1 ]
+}
+

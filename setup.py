@@ -3,16 +3,26 @@
 # July 2014
 
 from setuptools import setup
+from setuptools import find_packages
 
 setup(
     name='cfdg-optimizer',
     version='1.0',
-    py_modules=['cli'],
+    author='Jordan Cazamias',
+    author_email='jacazamias@gmail.com',
+    packages=find_packages(),
+    include_package_data=True,
     install_requires=[
-        'Click',
+        'click',
+        'pillow',
+        'numpy',
+        'scipy',
+        'pyssim'
     ],
-    entry_points='''
-        [console_scripts]
-        cfdgo=cli:cli
-    '''
+    entry_points={
+        'console_scripts':
+            [
+                'cfdgo = cfdg_optimizer.cli:main'
+            ]
+    }
 )
