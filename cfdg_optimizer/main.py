@@ -5,7 +5,7 @@
 # main.py: Main optimization function
 
 from exemplar import exgen, exscore
-from grammar import gramgen, gramparse
+from grammar import gramgen, gramparse, gramscore
 
 NUM_VARIANTS = 5
 NUM_ROUNDS = 5
@@ -46,8 +46,7 @@ def run(grammar_filename, test_image_dir, **kwargs):
                 ex_scores.append(score)
 
             # Find compiled score for variant
-            # TODO: Grammars need their own scoring algorithm
-            variant_score = exscore.compile_scores(ex_scores)
+            variant_score = gramscore.score_grammar(ex_scores)
             scoremap[variant] = variant_score
             "Variant {0} score: {1}".format(variantnum+1, variant_score)
 
