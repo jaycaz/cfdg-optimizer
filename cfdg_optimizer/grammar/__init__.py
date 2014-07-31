@@ -2,6 +2,8 @@
 # CFDG Optimizer
 # April 2014
 
+# Rule, Shape, Grammar classes
+
 from cfdg_optimizer.utils import saveutils
 
 
@@ -51,13 +53,17 @@ class Grammar:
         string += "}"
         return string
 
-    # Tries to write out grammar contents to new file <tryfilename>
-    # and returns actual file name used
-    #
-    # If <override> is true, it will write to <tryfilename> without question
-    # If <override> is false, it will search for the first available filename
-    # using first_available_filename
     def save(self, tryfilename, override=False):
+        """
+        Tries to write out grammar contents to new file <tryfilename>
+
+        :param override:
+            If <override> is true, it will write to <tryfilename> without question
+            If <override> is false, it will search for the first available filename
+            using first_available_filename
+
+        :return: If successful, actual file name used
+        """
         if override:
             usefilename = tryfilename
         else:

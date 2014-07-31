@@ -2,6 +2,8 @@
 #  CFDG Optimizer
 #  April 2014
 
+# gramparse.py: Grammar Parsing from CFDG files
+
 import copy
 import re
 import sys
@@ -35,6 +37,12 @@ rule_regex = re.compile(rule_header_pattern +
 
 
 def grammar_from_file(filename):
+    """
+    Parses CFDG file into grammar
+
+    :param filename: Name of CFDG file to parse
+    :return: Grammar instance
+    """
     # Use filename with extension stripped off
     extension = string.rfind(filename, ".cfdg")
     if extension == -1:
@@ -46,6 +54,14 @@ def grammar_from_file(filename):
 
 
 def grammar_from_string(grammartext, grammarname=None):
+    """
+    Parses string contents of a CFDG grammar into Grammar instance
+
+    :param grammartext: String to be parsed into grammar
+    :param grammarname: Required name for grammar
+
+    :return: Grammar instance
+    """
     if grammarname is None:
         grammarname = raw_input("Enter a name for grammar: '{0}...'".format(grammartext[0:20]))
 
@@ -110,8 +126,12 @@ def grammar_from_string(grammartext, grammarname=None):
 
     return gram
 
-# Returns grammar body that can be parsed by CFDG
 def clean_body(grammar):
+    """
+    Creates modified grammar body that can be parsed by CFDG
+
+    return: New grammar body string
+    """
     newbody = copy.deepcopy(grammar.body)
     wildcard_regex = re.compile(r"{0}\s*".format(WILDCARD))
 
@@ -148,23 +168,3 @@ def _read_file(filename):
 
     filebody = "".join(lines)
     return filebody
-
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print "Usage: python {0} <path to grammar file>".format(sys.argv[0])
-        print "Note: grammar must be a Context Free v3 file"
-        sys.exit(0)
-
-    grammarpath = sys.argv[1]
-    g = grammar_from_file(grammarpath)
-
-    print "fixed:"
-    print [rule.fixed for rule in g.rules]
-
-    print "weights:"
-    print [rule.weight for rule in g.rules]
-    print g
-    #s = _read_file("testgrammars/clouds.cfdg")
-    #m = re.search(startshape_header_regex, s)
-    #print m.groupdict()

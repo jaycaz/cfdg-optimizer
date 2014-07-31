@@ -2,6 +2,8 @@
 # CFDG Optimizer
 # July 2014
 
+# main.py: Main optimization function
+
 from exemplar import exgen, exscore
 from grammar import gramgen, gramparse
 
@@ -9,10 +11,12 @@ NUM_VARIANTS = 5
 NUM_ROUNDS = 5
 NUM_EXEMPLARS = 10
 
-# Main function (run using main CLI command)
-# Optimizes grammar <grammar_filename> using
-# images in test directory <test_images_dir>
 def run(grammar_filename, test_image_dir, **kwargs):
+    """
+    Main function (run using main CLI command)
+    Optimizes grammar <grammar_filename> using
+    images in test directory <test_images_dir>
+    """
     kwargs['maxshapes'] = 500000
     grammar = gramparse.grammar_from_file(grammar_filename)
     best_variant = None

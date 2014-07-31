@@ -2,12 +2,18 @@
 # CFDG Optimizer
 # April 2014
 
+# saveutils: Saving Utilities
+
 import os.path
 
 
-# Starting with <rootpath>, finds an appropriate digit to append
-# to avoid a filename collision
 def first_available_filename(tryname):
+    """
+    Starting with <rootpath>, finds an appropriate digit to append
+    to avoid a filename collision
+
+    return: Unique file name to save to
+    """
     if not os.path.isfile(tryname):
         return tryname
 

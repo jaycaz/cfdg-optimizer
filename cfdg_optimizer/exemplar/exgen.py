@@ -2,6 +2,8 @@
 # CFDG Optimizer
 # June 2014
 
+# exgen.py: Exemplar Generation
+
 import subprocess as proc
 from PIL.ImageFile import Parser
 
@@ -12,14 +14,18 @@ from cfdg_optimizer.exemplar import Exemplar
 MAX_SHAPES = 1000000
 
 
-# Using CFDG, creates an exemplar from the provided grammar,
-# retrieves the image data, and returns the image data
-#
-# Available kwargs:
-# 'maxshapes': maximum number of shapes
-# 'width': width, in pixels, of image
-# 'height': height, in pixels, of image
 def generate_exemplar(grammar, **kwargs):
+    """
+    Using CFDG, creates an exemplar from the provided grammar,
+    retrieves the image data, and returns the image data
+
+    Available kwargs:
+    'maxshapes': maximum number of shapes
+    'width': width, in pixels, of image
+    'height': height, in pixels, of image
+
+    :return: Exemplar instance
+    """
     commandstr = "cfdg"
 
     # process keyword arguments
@@ -60,11 +66,15 @@ def generate_exemplar(grammar, **kwargs):
     return ex
 
 
-# Convenience function to create many different exemplars
-# from one grammar at once
-#
-# debug: if true, prints debug information
 def generate_exemplars(grammar, numexemplars, debug=False, **kwargs):
+    """
+    Convenience function to create many different exemplars
+    from one grammar at once
+
+    :param debug: if true, prints debug information
+
+    :return: List of Exemplar instances
+    """
     exemplars = []
 
     for i in range(numexemplars):

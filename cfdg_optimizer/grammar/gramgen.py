@@ -2,6 +2,8 @@
 # CFDG Optimizer
 # April 2014
 
+# gramgen.py: Grammar Variant Generation
+
 import copy
 import math
 import random as rand
@@ -13,23 +15,32 @@ MAX_WEIGHT = 100
 INIT_STDDEV = 2
 
 
-# Generates new weight using appropriate random distribution
 def gen_weight(center, std_dev):
+    """
+    Generates new weight using appropriate random distribution
+    """
     r = rand.lognormvariate(math.log(center), std_dev)
     return min(r, MAX_WEIGHT)
 
 
-# Determines variation in randomness for variant generation
 def calc_stddev(roundnum, totalrounds):
+    """
+    Determines variation in randomness for variant generation
+
+    :param roundnum: Current round number, out of totalrounds
+    :param totalrounds: Total number of rounds in optimization
+    """
     if roundnum == 1:
         return INIT_STDDEV
     s = INIT_STDDEV * (1 - (float(roundnum - 1) / totalrounds))
     return max(0, s)
 
 
-# Creates grammar variant using simulated annealing
-# Variation will decrease depending on roundnum / totalrounds
 def generate_variant(grammar, roundnum, totalrounds, seed=None):
+    """
+    Creates grammar variant using simulated annealing.
+    Variation will decrease depending on roundnum / totalrounds
+    """
     if seed:
         rand.seed(seed)
 
