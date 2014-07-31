@@ -5,7 +5,6 @@
 # exemplar.py: stores exemplar class
 
 import pickle
-import sys
 
 from PIL import Image
 
@@ -25,7 +24,7 @@ class Exemplar:
                 'mode': self.image.mode,
                 'size': self.image.size,
                 'data': self.image.tostring(),
-                }
+            }
 
         exemplar_data = {
             'image_data': image_data,

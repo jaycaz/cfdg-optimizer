@@ -6,7 +6,6 @@
 
 import copy
 import re
-import sys
 import string
 
 from cfdg_optimizer.grammar import *
@@ -68,7 +67,6 @@ def grammar_from_string(grammartext, grammarname=None):
     gram = Grammar(grammarname, grammartext)
     rules = []
     shapes = []
-    clean_body = ""
 
     # Extract startshape
     startshapematch = startshape_regex.search(grammartext)
@@ -126,6 +124,7 @@ def grammar_from_string(grammartext, grammarname=None):
 
     return gram
 
+
 def clean_body(grammar):
     """
     Creates modified grammar body that can be parsed by CFDG
@@ -135,21 +134,21 @@ def clean_body(grammar):
     newbody = copy.deepcopy(grammar.body)
     wildcard_regex = re.compile(r"{0}\s*".format(WILDCARD))
 
-    def remove_wildcard(match):
-        wildcard_match = wildcard_regex.search(
-            newbody, match.start(), match.end())
-
-        if wildcard_match is None:
-            return newbody
-
-        string = wildcard_regex.sub(repl="", string=newbody, count=1)
-        return string
-
-    # Remove all WILDCARD markers in rule headers
-
-    #for rulematch in reversed(list(single_rule_regex.finditer(newbody))):
+    # def remove_wildcard(match):
+    #     wildcard_match = wildcard_regex.search(
+    #         newbody, match.start(), match.end())
+    #
+    #     if wildcard_match is none:
+    #         return newbody
+    #
+    #     string = wildcard_regex.sub(repl="", string=newbody, count=1)
+    #     return string
+    #
+    # # remove all wildcard markers in rule headers
+    #
+    # for rulematch in reversed(list(single_rule_regex.finditer(newbody))):
     #    newbody = remove_wildcard(rulematch)
-    #for rulematch in reversed(list(rule_regex.finditer(newbody))):
+    # for rulematch in reversed(list(rule_regex.finditer(newbody))):
     #    newbody = remove_wildcard(rulematch)
 
     #TODO: Fix this so it doesn't remove all asterisks in grammar body

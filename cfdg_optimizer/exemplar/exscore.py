@@ -40,10 +40,11 @@ def score_exemplar(exemplar, test_image_dir):
         raise Exception("ERROR: no files in {0} could be opened as images"
                         .format(test_image_dir))
 
-    compiled_score = _compile_scores(individual_scores)
+    compiled_score = compile_scores(individual_scores)
     return compiled_score
 
-def _compile_scores(scores):
+
+def compile_scores(scores):
     """
     :param scores: list of scores for an exemplar
     :return: overall exemplar score

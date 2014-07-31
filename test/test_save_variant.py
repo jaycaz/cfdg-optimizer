@@ -6,7 +6,6 @@
 # and saving it to another file
 
 import os
-import sys
 
 from cfdg_optimizer.grammar import gramgen, gramparse
 from cfdg_optimizer.utils import saveutils as save

@@ -11,6 +11,7 @@ NUM_VARIANTS = 5
 NUM_ROUNDS = 5
 NUM_EXEMPLARS = 10
 
+
 def run(grammar_filename, test_image_dir, **kwargs):
     """
     Main function (run using main CLI command)
@@ -45,6 +46,7 @@ def run(grammar_filename, test_image_dir, **kwargs):
                 ex_scores.append(score)
 
             # Find compiled score for variant
+            # TODO: Grammars need their own scoring algorithm
             variant_score = exscore.compile_scores(ex_scores)
             scoremap[variant] = variant_score
             "Variant {0} score: {1}".format(variantnum+1, variant_score)
@@ -63,7 +65,6 @@ def run(grammar_filename, test_image_dir, **kwargs):
 
         print "Current best variant: {0} (score {1})".format(
             best_variant_version, best_variant_score)
-
 
     print "Best overall variant: Variant {0} with a score of {1}".format(
         best_variant_version, best_variant_score)

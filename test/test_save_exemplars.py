@@ -6,13 +6,10 @@
 
 import os
 import shutil
-import sys
 
 from cfdg_optimizer.exemplar import exgen as egen
 from cfdg_optimizer.grammar import gramparse as c
 from cfdg_optimizer.utils import saveutils as save
-
-
 
 
 def run_test():

@@ -8,6 +8,7 @@ import click
 
 import main
 
+
 @click.command()
 @click.argument('grammar-file')
 @click.argument('test-images-dir')

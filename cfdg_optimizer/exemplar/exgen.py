@@ -39,7 +39,8 @@ def generate_exemplar(grammar, **kwargs):
     if 'height' in kwargs:
         commandstr += " -h {0}".format(kwargs['height'])
 
-    commandstr += " -" # specifies to cfdg that grammar file will come from stdin
+    # specify to cfdg that grammar file will come from stdin
+    commandstr += " -"
 
     # run cfdg, passing in grammar.body as the input
     try:

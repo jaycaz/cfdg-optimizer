@@ -5,13 +5,10 @@
 # test_save_exemplar.py: test generating an exemplar from a grammar and saving it to a file
 
 import os
-import sys
 
 from cfdg_optimizer.exemplar import exgen
 from cfdg_optimizer.grammar import gramparse
 from cfdg_optimizer.utils import saveutils
-
-
 
 
 def run_test():
