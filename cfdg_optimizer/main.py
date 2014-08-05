@@ -6,6 +6,7 @@
 
 from exemplar import exgen, exscore
 from grammar import gramgen, gramparse, gramscore
+from utils import imageutils
 
 NUM_VARIANTS = 5
 NUM_ROUNDS = 5
@@ -45,6 +46,10 @@ def run(grammar_filename, test_image_dir, **kwargs):
                 print "\t\tExemplar score: {0}".format(score)
                 ex_scores.append(score)
 
+                imageutils.show(exemplar.image, killothers=True,
+                                message="Round {0}, Grammar {1}, Ex {2}".format(
+                                    roundnum, variantnum, exemplarnum))
+
             # Find compiled score for variant
             variant_score = gramscore.score_grammar(ex_scores)
             scoremap[variant] = variant_score
@@ -70,4 +75,4 @@ def run(grammar_filename, test_image_dir, **kwargs):
 
 
 if __name__ == "__main__":
-    run("test/testgrammars/clouds.cfdg", "test/testclouds")
+    run("../test/testgrammars/clouds.cfdg", "../test/testclouds")
