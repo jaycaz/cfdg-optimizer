@@ -7,9 +7,9 @@
 import os
 import shutil
 
-from cfdg_optimizer.exemplar import exgen as egen
-from cfdg_optimizer.grammar import gramparse as c
-from cfdg_optimizer.utils import saveutils as save
+from cfdg_optimizer.exemplar import exgen, exsave
+from cfdg_optimizer.grammar import gramparse
+from cfdg_optimizer.utils import saveutils
 
 
 def run_test():
@@ -24,11 +24,11 @@ def run_test():
 
     # Create grammar
     print "Creating grammar from file '{0}'...".format(testgrammarfile)
-    g = c.grammar_from_file(testgrammarfile)
+    g = gramparse.grammar_from_file(testgrammarfile)
 
     # Generate <numexemplars> exemplars
     print "Generating {0} exemplars...".format(numexemplars)
-    exemplars = egen.generate_exemplars(g, numexemplars, debug=True)
+    exemplars = exgen.generate_exemplars(g, numexemplars, debug=True)
     assert len(exemplars) == numexemplars, \
         "Expected {0} exemplars to be generated, " \
         "instead have {1}".format(numexemplars, len(exemplars))
@@ -36,9 +36,9 @@ def run_test():
     # Saving exemplars to separate files
     print "Exemplars successfully generated. Saving exemplars to files..."
     for i, ex in list(enumerate(exemplars)):
-        savefilename = save.first_available_filename(savefilename)
+        savefilename = saveutils.first_available_filename(savefilename)
         print "Saving exemplar {0} of {1} to {2}".format(i+1, numexemplars, savefilename)
-        ex.save_image(savefilename)
+        exsave.save_image(ex, savefilename)
 
     print "All exemplars successfully saved!"
 

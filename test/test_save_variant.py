@@ -7,8 +7,8 @@
 
 import os
 
-from cfdg_optimizer.grammar import gramgen, gramparse
-from cfdg_optimizer.utils import saveutils as save
+from cfdg_optimizer.grammar import gramgen, gramparse, gramsave
+from cfdg_optimizer.utils import saveutils
 
 
 g = None
@@ -32,8 +32,9 @@ def run_test():
     print "Creating variant from grammar..."
     v = gramgen.generate_variant(g, 1, 5)
 
-    print "Saving variant to file: " + save.first_available_filename(newfilename)
-    v.save(newfilename)
+    print "Saving variant to file: " + \
+          saveutils.first_available_filename(newfilename)
+    gramsave.save(v, newfilename)
 
     print "Variant successfully saved!"
 

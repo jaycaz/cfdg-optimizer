@@ -8,7 +8,7 @@ import copy
 import re
 import string
 
-from cfdg_optimizer.grammar import *
+from cfdg_optimizer.grammar import Grammar, Rule, Shape
 
 
 WILDCARD = r"\*"

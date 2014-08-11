@@ -4,6 +4,8 @@
 
 # saveutils: Saving Utilities
 
+import datetime
+import time
 import os.path
 
 
@@ -11,6 +13,8 @@ def first_available_filename(tryname):
     """
     Starting with <rootpath>, finds an appropriate digit to append
     to avoid a filename collision
+
+    :param tryname: File name to attempt. Can have an extension.
 
     return: Unique file name to save to
     """
@@ -32,3 +36,12 @@ def first_available_filename(tryname):
         if not os.path.isfile(filename):
             return filename
         i += 1
+
+
+def timestamp():
+    """
+    Provides a timestamp string suitable for integrating into file names
+    :return: Timestamp string
+    """
+    return datetime.datetime.fromtimestamp(time.time()).strftime(
+        '%Y-%m-%d_%H:%M:%S')

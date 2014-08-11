@@ -53,29 +53,3 @@ class Grammar:
         string += "}"
         return string
 
-    def save(self, tryfilename, override=False):
-        """
-        Tries to write out grammar contents to new file <tryfilename>
-
-        :param override:
-            If <override> is true, it will write to <tryfilename> without question
-            If <override> is false, it will search for the first available filename
-            using first_available_filename
-
-        :return: If successful, actual file name used
-        """
-        if override:
-            usefilename = tryfilename
-        else:
-            usefilename = saveutils.first_available_filename(tryfilename)
-
-        try:
-            f = open(usefilename, 'w')
-            f.write(self.body)
-            f.close()
-        except IOError as e:
-            print "Error saving grammar '{0}' to {1}".format(
-                self.name, usefilename)
-            raise e
-
-        return usefilename

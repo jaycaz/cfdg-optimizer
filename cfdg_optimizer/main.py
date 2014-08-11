@@ -5,8 +5,8 @@
 # main.py: Main optimization function
 
 from exemplar import exgen, exscore
-from grammar import gramgen, gramparse, gramscore
-from utils import imageutils
+from grammar import gramgen, gramparse, gramscore, gramsave
+from utils import imageutils, saveutils
 
 NUM_VARIANTS = 5
 NUM_ROUNDS = 5
@@ -27,20 +27,23 @@ def run(grammar_filename, test_image_dir, **kwargs):
 
     # Main optimization loop
     for roundnum in range(NUM_ROUNDS):
-        print "*** Optimization round {0} of {1}".format(roundnum+1, NUM_ROUNDS)
+        print "*** Optimization round {0} of {1}".format(
+            roundnum+1, NUM_ROUNDS)
         variants = []
         scoremap = {}
 
         # Generate and score round variants
         for variantnum in range(NUM_VARIANTS):
-            print "Creating variant {0} of {1}".format(variantnum+1, NUM_VARIANTS)
+            print "Creating variant {0} of {1}".format(
+                variantnum+1, NUM_VARIANTS)
             variant = gramgen.generate_variant(grammar, roundnum, NUM_ROUNDS)
             variants.append(variant)
 
             # Generate and score exemplars for every variant
             ex_scores = []
             for exemplarnum in range(NUM_EXEMPLARS):
-                print "\tCreating exemplar {0}-{1}...".format(variantnum+1, exemplarnum+1)
+                print "\tCreating exemplar {0}-{1}...".format(
+                    variantnum+1, exemplarnum+1)
                 exemplar = exgen.generate_exemplar(variant, **kwargs)
                 score = exscore.score_exemplar(exemplar, test_image_dir)
                 print "\t\tExemplar score: {0}".format(score)
@@ -72,6 +75,15 @@ def run(grammar_filename, test_image_dir, **kwargs):
 
     print "Best overall variant: Variant {0} with a score of {1}".format(
         best_variant_version, best_variant_score)
+
+    filename = "{0}-best-{1}.cfdg".format(best_variant.name,
+                                          saveutils.timestamp())
+
+    print "Saving clean version of best variant..."
+    filename = gramsave.save(best_variant, filename)
+    print "Best variant saved to: '{0}'".format(filename)
+
+    return
 
 
 if __name__ == "__main__":
