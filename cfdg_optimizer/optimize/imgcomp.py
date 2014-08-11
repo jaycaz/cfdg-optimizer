@@ -4,8 +4,12 @@
 
 # imgcomp.py: Image comparison
 
+import copy
+import sys
+
 import ssim
 from PIL import Image
+from cfdg_optimizer.utils.imgcomputils.imgcmp import *
 
 MIN_VALUE = -1.0
 MAX_VALUE = 1.0
@@ -25,7 +29,9 @@ def compare(img1, img2, **kwargs):
 
     # Optional keyword arguments:
 
-    score = ssim.compute_ssim(img1, img2, **kwargs)
+    # score = ssim.compute_ssim(img1, img2, **kwargs)
+    cmp = FuzzyImageCompare(img1, img2)
+    score = cmp.similarity()
 
     return score
 

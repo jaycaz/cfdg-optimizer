@@ -17,7 +17,8 @@ setup(
         'pillow',
         'numpy',
         'scipy',
-        'pyssim'
+        'pyssim',
+        'python-Levenshtein'
     ],
     entry_points={
         'console_scripts':
