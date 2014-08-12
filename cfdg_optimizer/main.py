@@ -51,7 +51,7 @@ def run(grammar_filename, test_image_dir, **kwargs):
 
                 imageutils.show(exemplar.image, killothers=True,
                                 message="Round {0}, Grammar {1}, Ex {2}".format(
-                                    roundnum, variantnum, exemplarnum))
+                                    roundnum+1, variantnum+1, exemplarnum+1))
 
             # Find compiled score for variant
             variant_score = gramscore.score_grammar(ex_scores)
@@ -82,8 +82,6 @@ def run(grammar_filename, test_image_dir, **kwargs):
     print "Saving clean version of best variant..."
     filename = gramsave.save(best_variant, filename)
     print "Best variant saved to: '{0}'".format(filename)
-
-    return
 
 
 if __name__ == "__main__":
