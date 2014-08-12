@@ -31,6 +31,7 @@ def compare(img1, img2, **kwargs):
 
     # score = ssim.compute_ssim(img1, img2, **kwargs)
     cmp = FuzzyImageCompare(img1, img2)
+    print cmp.compare()
     score = cmp.similarity()
 
     return score

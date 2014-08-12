@@ -212,8 +212,8 @@ class FuzzyImageCompare(object):
         cmp = self.compare()
 
         lnrmsd = (cmp['levenshtein'] + cmp['nrmsd']) / 2
-        return lnrmsd
-        return min(lnrmsd * cmp['psnr'] / self._tol, 100.0)  # TODO: fix psnr!
+        # return lnrmsd
+        return lnrmsd * cmp['psnr'] / self._tol  # TODO: fix psnr!
 
 
 if __name__ == '__main__':
